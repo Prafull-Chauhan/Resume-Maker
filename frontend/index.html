@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document & Application Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand-section">
+            <div class="brand-icon">D</div>
+            <div class="brand-title">DocuPortal</div>
+        </div>
+
+        <ul class="nav-links">
+            <li class="nav-item active" onclick="switchTab('dashboard')">📊 Overview</li>
+            <li class="nav-item" onclick="switchTab('applications')">📑 Applications</li>
+            <li class="nav-item" onclick="switchTab('documents')">📄 Documents</li>
+            <li class="nav-item" onclick="switchTab('template-builder')">🛠️ Template Builder</li>
+            <li class="nav-item" onclick="switchTab('exports')">📥 Export Center</li>
+        </ul>
+
+        <div class="user-profile-widget">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-details">
+                <div class="user-name" id="userName">User</div>
+                <div class="user-role-badge" id="userRole">user</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="logout()">🚪</button>
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="top-header">
+            <h2 id="pageHeading" style="margin:0; font-size:18px;">Dashboard</h2>
+            <button class="btn btn-primary" onclick="openNewAppModal()">+ New Application</button>
+        </header>
+
+        <section class="content-body">
+            <div id="tab-dashboard" class="tab-pane active">
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-icon blue">📋</div><div><h3 id="statTotalApps" style="margin:0;">0</h3><small>Total Applications</small></div></div>
+                    <div class="kpi-card"><div class="kpi-icon green">✅</div><div><h3 id="statApproved" style="margin:0;">0</h3><small>Approved</small></div></div>
+                    <div class="kpi-card"><div class="kpi-icon amber">⏳</div><div><h3 id="statPending" style="margin:0;">0</h3><small>Pending</small></div></div>
+                    <div class="kpi-card"><div class="kpi-icon purple">📜</div><div><h3 id="statDocs" style="margin:0;">0</h3><small>Documents</small></div></div>
+                </div>
+
+                <div class="card-container">
+                    <div class="card-header"><h3>Recent Submissions</h3></div>
+                    <table class="data-table" id="dashboardRecentTable">
+                        <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Applicant</th><th>Status</th><th>Date</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-applications" class="tab-pane">
+                <div class="card-container">
+                    <div class="card-header"><h3>Applications</h3></div>
+                    <table class="data-table">
+                        <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Priority</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+                        <tbody id="appTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-documents" class="tab-pane">
+                <div class="card-container">
+                    <div class="card-header"><h3>Generated Documents</h3></div>
+                    <table class="data-table">
+                        <thead><tr><th>Doc ID</th><th>Title</th><th>Type</th><th>Template</th><th>Creator</th><th>Date</th><th>Actions</th></tr></thead>
+                        <tbody id="docTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-template-builder" class="tab-pane">
+                <div class="card-container">
+                    <div class="card-header">
+                        <h3>Visual Template Designer</h3>
+                        <button class="btn btn-primary btn-sm" onclick="saveVisualTemplate()">💾 Save Template</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <div class="form-group"><label>Template Name</label><input type="text" id="tplName" class="form-control" placeholder="e.g. Award Certificate"></div>
+                            <div class="form-group"><label>Category</label><input type="text" id="tplCategory" class="form-control" placeholder="e.g. Academic"></div>
+                            <div class="form-group"><label>Layout HTML</label><textarea id="tplBody" class="form-control" style="height:160px; font-family:monospace;" oninput="updateLivePreview()"><h2>Certificate of Achievement</h2><p>Awarded to <strong>{{applicant_name}}</strong> for <strong>{{skill_name}}</strong> on {{award_date}}.</p></textarea></div>
+                        </div>
+                        <div>
+                            <label style="font-size:13px; font-weight:600; margin-bottom:6px; display:block;">Live Render Preview</label>
+                            <div id="livePreviewBox" style="border:1px solid #e2e8f0; border-radius:8px; padding:20px; background:#fff; min-height:220px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-exports" class="tab-pane">
+                <div class="card-container">
+                    <div class="card-header"><h3>Export Datasets</h3></div>
+                    <div style="display:flex; gap:16px;">
+                        <button class="btn btn-outline" onclick="exportCSV()">📊 Export CSV</button>
+                        <button class="btn btn-outline" onclick="exportJSONData()">📦 Export JSON</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="newAppModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="card-header"><h3 style="margin:0;">Submit Application</h3><button class="btn btn-outline btn-sm" onclick="closeModal('newAppModal')">✕</button></div>
+            <form onsubmit="submitNewApp(event)">
+                <div class="form-group"><label>Title</label><input type="text" id="newAppTitle" class="form-control" required></div>
+                <div class="form-group"><label>Category</label><input type="text" id="newAppCategory" class="form-control" value="General"></div>
+                <div class="form-group"><label>Applicant Name</label><input type="text" id="newAppApplicant" class="form-control" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

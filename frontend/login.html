@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Document Portal</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="logo-badge">D</div>
+            <h2>Welcome Back</h2>
+            <p style="color:#64748b; font-size:14px;">Sign in to your account</p>
+        </div>
+
+        <div id="alertBox" class="alert-msg"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+
+        <div class="demo-credentials-box">
+            <div><strong>Quick Demo Logins:</strong></div>
+            <button class="quick-btn" onclick="fillDemo('admin@example.com', 'Password@123')">🔑 Admin</button>
+            <button class="quick-btn" onclick="fillDemo('reviewer@example.com', 'Password@123')">📝 Reviewer</button>
+            <button class="quick-btn" onclick="fillDemo('john.doe@example.com', 'Password@123')">👤 User</button>
+        </div>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="signup.html">Create an Account</a>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

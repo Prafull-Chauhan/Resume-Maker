@@ -1,0 +1,13 @@
+<div class="template-builder-container">
+  <div class="builder-sidebar">
+    <h3>Configure Template</h3>
+    <input type="text" [(ngModel)]="templateName" placeholder="Template Name" class="form-control" />
+    <button class="btn btn-sm btn-outline" (click)="addField()">+ Add Field</button>
+    <textarea [(ngModel)]="layoutHtml" (input)="renderPreview()" class="form-control" rows="6"></textarea>
+    <button class="btn btn-primary" (click)="saveTemplate()">Save Template</button>
+  </div>
+  <div class="builder-preview">
+    <h3>Preview</h3>
+    <div [innerHTML]="previewHtml"></div>
+  </div>
+</div>
